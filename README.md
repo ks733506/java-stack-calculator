@@ -1,120 +1,192 @@
 # Stack Calculator
 
-A Java-based calculator implementation using stack data structure to evaluate mathematical expressions.
+A Java-based command-line calculator that uses a stack data structure to perform arithmetic operations.
 
-## Project Overview
+## Overview
 
-This project demonstrates the implementation of a stack-based calculator that efficiently processes arithmetic operations using the stack data structure. It supports common mathematical operations and follows postfix notation (Reverse Polish Notation) or infix notation evaluation.
+This application implements a simple yet effective stack-based calculator where users can push values onto a stack and perform operations (add, subtract, multiply, divide) on those values. The calculator uses Java's built-in `Stack` class to manage numeric values.
 
 ## Features
 
-- **Stack Implementation**: Custom stack data structure implementation
-- **Expression Evaluation**: Evaluate mathematical expressions using stack-based algorithms
-- **Arithmetic Operations**: Support for basic operations (+, -, *, /)
-- **User-Friendly Interface**: Simple command-line interface for calculator operations
+- **Push Operation**: Push double values onto the stack
+- **Arithmetic Operations**: 
+  - `add` - Add the top two values
+  - `sub` - Subtract the top two values
+  - `mult` - Multiply the top two values
+  - `div` - Divide the top two values (with zero-division protection)
+- **Stack Management**:
+  - `list` - Display all values currently in the stack
+  - `clear` - Empty the stack
+- **Error Handling**: Validates operations and prevents invalid calculations (e.g., division by zero)
 
 ## Project Structure
 
 ```
 java-stack-calculator/
 ├── src/
-│   ├── module-info.java       # Java module configuration
-│   └── stackCalculator/        # Main package
-│       ├── Stack.java          # Stack data structure implementation
-│       ├── Calculator.java     # Calculator logic and expression evaluation
-│       └── Main.java           # Entry point and CLI
-├── bin/                        # Compiled class files
-├── .classpath                  # Eclipse classpath configuration
-└── .project                    # Eclipse project configuration
+│   ├── module-info.java              # Java module configuration
+│   └── stackCalculator/
+│       ├── StackCalculator.java      # Core stack calculator class
+│       └── stackCalculatorApp.java   # Application entry point with CLI
+└── bin/                              # Compiled class files
 ```
+
+## Classes
+
+### StackCalculator.java
+The core calculator class that wraps Java's `Stack<Double>` and provides the following methods:
+- `push(double value)` - Push a value onto the stack
+- `pop()` - Pop and return the top value
+- `size()` - Get the current stack size
+- `listStack()` - Display all values in the stack
+- `clearStack()` - Remove all values from the stack
+- `setCommand(String cmd)` / `getLastCommand()` - Track the last command entered
+- `displayWelcomeMessage()` - Show welcome text
+- `displayCommands()` - Show available commands
+
+### stackCalculatorApp.java
+The main application class that provides the command-line interface:
+- Implements the main loop that reads user commands
+- Processes commands: push, add, sub, mult, div, list, clear, quit
+- Validates input and handles errors gracefully
 
 ## Getting Started
 
-### Prerequisites
-
-- Java Development Kit (JDK) 9 or higher (for module support)
-- Eclipse IDE or any Java compiler
+### Requirements
+- Java Development Kit (JDK) 9 or higher
+- Any Java IDE (Eclipse, IntelliJ, etc.) or command-line compiler
 
 ### Compilation
 
-Using Eclipse IDE:
+**Using Eclipse:**
 1. Import the project into Eclipse
 2. The project will automatically compile
 
-Using command line:
+**Using Command Line:**
 ```bash
 javac -d bin src/stackCalculator/*.java src/module-info.java
 ```
 
 ### Running the Application
 
-Using Eclipse:
+**Using Eclipse:**
 1. Right-click the project
 2. Select "Run As" → "Java Application"
-3. Choose the Main class
+3. Select `stackCalculatorApp`
 
-Using command line:
+**Using Command Line:**
 ```bash
 java -p bin -m stackCalculator
 ```
 
 ## Usage
 
-1. Launch the application
-2. Enter mathematical expressions as prompted
-3. View the calculated results
-4. Exit the program
-
-### Example
-
+Once the application starts, you'll see:
 ```
-Enter expression: 5 3 +
-Result: 8
+Welcome to the Stack Calculator.
 
-Enter expression: 10 2 /
-Result: 5
+Commands: push n, add, sub, mult, div, list, clear, or quit.
+
+Stack> 
 ```
+
+### Command Examples
+
+**Push values:**
+```
+Stack> push 5
+5.0
+Stack> push 3
+5.0
+3.0
+```
+
+**Add operation:**
+```
+Stack> add
+8.0
+```
+
+**Subtract operation:**
+```
+Stack> push 10
+Stack> push 4
+Stack> sub
+6.0
+```
+
+**Multiply operation:**
+```
+Stack> push 3
+Stack> push 7
+Stack> mult
+21.0
+```
+
+**Divide operation:**
+```
+Stack> push 20
+Stack> push 4
+Stack> div
+5.0
+```
+
+**List stack:**
+```
+Stack> list
+20.0
+5.0
+```
+
+**Clear stack:**
+```
+Stack> clear
+empty
+```
+
+**Quit the application:**
+```
+Stack> quit
+Thanks for using the Stack Calculator.
+```
+
+## How It Works
+
+The calculator follows the **Reverse Polish Notation (RPN)** principle, where:
+1. Numbers are pushed onto a stack
+2. Operations pop the required number of operands from the stack
+3. The result is pushed back onto the stack
+4. This eliminates the need for parentheses and follows a straightforward evaluation model
+
+### Example: Calculate (5 + 3) * 2
+```
+Stack> push 5
+5.0
+Stack> push 3
+5.0
+3.0
+Stack> add
+8.0
+Stack> push 2
+8.0
+2.0
+Stack> mult
+16.0
+```
+
+## Error Handling
+
+- **Empty Stack Operations**: Attempting operations that require values will show an error
+- **Division by Zero**: The calculator prevents division by zero and restores the stack to its original state
+- **Invalid Commands**: Unknown commands display an "Unrecognized command" message
+- **Missing Arguments**: Commands like `push` that require arguments will prompt for the correct usage
 
 ## Implementation Details
 
-### Stack Class
-
-The `Stack` class provides the core data structure with standard operations:
-- `push(element)`: Add element to stack
-- `pop()`: Remove and return top element
-- `peek()`: View top element without removing
-- `isEmpty()`: Check if stack is empty
-- `size()`: Get current stack size
-
-### Calculator Class
-
-The `Calculator` class handles:
-- Expression parsing
-- Operation precedence
-- Stack-based evaluation
-- Error handling for invalid expressions
-
-## Technologies Used
-
-- **Language**: Java
-- **Build System**: Eclipse IDE
-- **JDK Version**: 9+ (Module System)
-
-## Learning Objectives
-
-This project demonstrates:
-- Stack data structure implementation and usage
-- Expression evaluation algorithms
-- Object-oriented programming principles
-- Java module system basics
-
-## Future Enhancements
-
-- [ ] Support for parentheses in expressions
-- [ ] Additional mathematical functions (sqrt, power, etc.)
-- [ ] GUI interface
-- [ ] Expression history
-- [ ] Input validation and error messages
+- **Data Structure**: Uses Java's built-in `java.util.Stack<Double>` class
+- **Input Processing**: Uses `Scanner` to read user input and `String.split()` to parse commands
+- **Double Precision**: All calculations use double-precision floating-point numbers
+- **Module System**: Implements Java's module system for clean dependency management
 
 ## Author
 
@@ -124,12 +196,6 @@ Created by: ks733506
 
 This project is open source and available for educational purposes.
 
-## Notes
-
-- Ensure proper input format when entering expressions
-- Division by zero will result in an error
-- The calculator maintains precision for decimal operations
-
 ---
 
-For questions or contributions, feel free to open an issue or pull request!
+Enjoy using the Stack Calculator! For issues or suggestions, feel free to open an issue or submit a pull request.
